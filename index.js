@@ -4,7 +4,8 @@ const PORT = 8080;
 
 app.use(express.json());
 
-app.use("/clients", require("./routes/clients"));
+app.use("/users", require("./routes/users"));
+app.use("/orders", require("./routes/orders"));
 
 app.listen(PORT, () => {
   console.log(`Server started on port: ${PORT}`);
