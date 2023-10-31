@@ -1,5 +1,5 @@
 const { Order, User } = require("../models/index.js");
-const {Op} = sequelize
+// const {Op} = Sequelize
 
 const OrderController = {
   create(req, res) {

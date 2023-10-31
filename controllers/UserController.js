@@ -1,12 +1,13 @@
-const { User, Order } = require("../models/index.js");
-const bycrypt = require("bycryptjs");
+const { User, Order, Sequelize, Token } = require("../models/index.js");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { Op } = Sequelize;
 const { jwt_secret } = require("../config/config.json")["development"];
 
 const UserController = {
   create(req, res) {
     req.body.role = "User";
-    const password = bycrypt.hashSync(req.body.password, 10);
+    const password = bcrypt.hashSync(req.body.password, 10);
     User.create({ ...req.body, password })
       .then((user) =>
         res.status(201).send({ message: "User created succesfully", user })
@@ -25,6 +26,16 @@ const UserController = {
           .send({ message: "Unexpected error while charging the orders." });
       });
   },
+  getOneByName(req, res) {
+    User.findOne({
+      where: {
+        name: {
+          [Op.like]: `%${req.params.name}%`,
+        },
+      },
+      include: [Order],
+    }).then((User) => res.send(User));
+  },
   login(req, res) {
     User.findOne({
       where: {
@@ -36,17 +47,40 @@ const UserController = {
           .status(400)
           .send({ message: "The user/password are incorrect" });
       }
-      const isMatch = bycrypt.compareSync(req.body.password, user.password);
+      const isMatch = bcrypt.compareSync(req.body.password, user.password);
       if (!isMatch) {
         return res
           .status(400)
           .send({ message: "The user/password are incorrect" });
       }
-      let token = jwt.sign({ id: user.id }, jwt_secret);
+      const token = jwt.sign({ id: user.id }, jwt_secret);
       Token.create({ token, UserId: user.id });
-      res.send({ message: "Bienvenid@" + username, user, token });
+      res.send({ message: "Welcome," + user.name, user, token });
     });
-    res.send(user);
+  },
+  async delete(req, res) {
+    await User.destroy({
+      where: {
+        name: req.params.name,
+      },
+    });
+    res.send("User deleted sucessfully");
+  },
+  async logout(req, res) {
+    try {
+      await Token.destroy({
+        where: {
+          [Op.and]: [
+            { UserId: req.user.id },
+            { token: req.headers.authorization },
+          ],
+        },
+      });
+      res.send({message: "See you soon"})
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({message: "Unexpected error trying to logout"})
+    }
   },
 };
 
