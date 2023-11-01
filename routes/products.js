@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const ProductController = require("../controllers/ProductController");
+const { authentication, isAdmin } = require("../middleware/authentication");
 
-router.post("/", ProductController.create);
+router.post("/create", authentication, isAdmin, ProductController.create);
 
 module.exports = router;

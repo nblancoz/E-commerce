@@ -55,7 +55,7 @@ const UserController = {
       }
       const token = jwt.sign({ id: user.id }, jwt_secret);
       Token.create({ token, UserId: user.id });
-      res.send({ message: "Welcome," + user.name, user, token });
+      res.send({ message: "Welcome, " + user.name, user, token });
     });
   },
   async delete(req, res) {
