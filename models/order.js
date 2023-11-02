@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const orders_products = require("./order_product");
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
     /**
@@ -8,7 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Order.belongsTo(models.User);
+      Order.belongsTo(models.User),
+      Order.belongsToMany(models.Product, {
+        through: models.Order_Product
+      })
     }
   }
   Order.init(

@@ -1,4 +1,4 @@
-const { Product, Category } = require("../models/index.js");
+const { Product, Category, Orders_Products } = require("../models/index.js");
 const product = require("../models/product.js");
 
 const ProductController = {
@@ -43,9 +43,11 @@ const ProductController = {
   },
   getAll(req, res) {
     Product.findAll({
-      //   include: [Category],
+        include: [Category]
     })
-      .then((users) => res.send(users))
+      .then((products) => 
+      product.addOrder(req.body.OrderId),
+      res.send(products))
       .catch((err) => {
         console.error(err);
         res.status(500).send("Unexpected error while charging the categories");
