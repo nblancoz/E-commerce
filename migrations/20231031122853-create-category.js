@@ -9,16 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      cleats: {
-        type: Sequelize.STRING
-      },
-      shirts: {
-        type: Sequelize.STRING
-      },
-      accessories: {
-        type: Sequelize.STRING
-      },
-      brand: {
+      name: {
         type: Sequelize.STRING
       },
       createdAt: {

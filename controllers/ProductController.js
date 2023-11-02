@@ -1,5 +1,4 @@
-const { Product, Category, Orders_Products } = require("../models/index.js");
-const product = require("../models/product.js");
+const { Product, Category } = require("../models/index.js");
 
 const ProductController = {
   create(req, res) {
