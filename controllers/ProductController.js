@@ -1,4 +1,5 @@
-const { Product } = require("../models/index.js");
+const { Product, Category } = require("../models/index.js");
+const product = require("../models/product.js");
 
 const ProductController = {
   create(req, res) {
@@ -14,18 +15,48 @@ const ProductController = {
     try {
       await Product.update(req.body, {
         where: {
-          id: req.params.id
+          id: req.params.id,
         },
       });
-      res.send({ message: "Product updated successfully" });
+      res.send("Product updated successfully");
     } catch (error) {
       console.error(error);
       res
         .status(500)
-        .send({
-          message: "Unexpected error while trying to update de product",
-        });
+        .send("Unexpected error while trying to update de product");
     }
+  },
+  async delete(req, res) {
+    try {
+      await Product.destroy({
+        where: {
+          id: req.params.id,
+        },
+      });
+      res.send("Product deleted successfully");
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .send("Unexpected error while trying to delete the product");
+    }
+  },
+  getAll(req, res) {
+    Product.findAll({
+      //   include: [Category],
+    })
+      .then((users) => res.send(users))
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Unexpected error while charging the categories");
+      });
+  },
+  getOneById(req, res) {
+    Product.findOne({
+      where: {
+        id: req.params.id,
+      },
+    }).then((User) => res.send(User));
   },
 };
 

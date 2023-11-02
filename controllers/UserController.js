@@ -21,9 +21,7 @@ const UserController = {
       .then((users) => res.send(users))
       .catch((err) => {
         console.error(err);
-        res
-          .status(500)
-          .send({ message: "Unexpected error while charging the orders." });
+        res.status(500).send("Unexpected error while charging the orders");
       });
   },
   getOneByName(req, res) {
@@ -43,15 +41,11 @@ const UserController = {
       },
     }).then((user) => {
       if (!user) {
-        return res
-          .status(400)
-          .send({ message: "The user/password are incorrect" });
+        return res.status(400).send("The user/password are incorrect");
       }
       const isMatch = bcrypt.compareSync(req.body.password, user.password);
       if (!isMatch) {
-        return res
-          .status(400)
-          .send({ message: "The user/password are incorrect" });
+        return res.status(400).send("The user/password are incorrect");
       }
       const token = jwt.sign({ id: user.id }, jwt_secret);
       Token.create({ token, UserId: user.id });
@@ -64,7 +58,7 @@ const UserController = {
         name: req.params.name,
       },
     });
-    res.send("User deleted sucessfully");
+    res.send({ message: "User deleted sucessfully", user });
   },
   async logout(req, res) {
     try {
@@ -76,10 +70,10 @@ const UserController = {
           ],
         },
       });
-      res.send({message: "See you soon"})
+      res.send({ message: "See you soon", user });
     } catch (error) {
       console.error(error);
-      res.status(500).send({message: "Unexpected error trying to logout"})
+      res.status(500).send("Unexpected error trying to logout");
     }
   },
 };

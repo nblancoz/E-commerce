@@ -11,7 +11,7 @@ const OrderController = {
   },
   getAll(req, res) {
     Order.findAll({
-      include: [User],
+      include: [User]
     })
       .then((orders) => res.send(orders))
       .catch((err) => {
