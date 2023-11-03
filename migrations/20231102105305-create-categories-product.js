@@ -26,6 +26,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Category_Products');
+    await queryInterface.dropTable('Categories_Products');
   }
 };
