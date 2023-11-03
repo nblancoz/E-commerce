@@ -51,6 +51,32 @@ const CategoryController = {
         .send("Unexpected error while trying to delete the category");
     }
   },
+  async getOneById(req, res) {
+    try {
+      const category = await Category.findAll({
+        where: {
+          id: req.params.id
+        }
+      })
+      res.send(category)
+    } catch (error) {
+      console.error(error)
+      res.status(500).send("Unexpected error while trying to search to this category") // al colocar un id que no existe sale un array vacio
+    }
+  },
+  async getByName(req, res) {
+    try {
+      const category = await Category.findAll({
+        where: {
+          name: req.params.name
+        }
+      })
+      res.send(category)
+    } catch (error) {
+      console.error(error)
+      res.status(404).send("Category not found")
+    }
+  }
 };
 
 module.exports = CategoryController;

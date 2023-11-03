@@ -98,19 +98,19 @@ const ProductController = {
       res.status(404).send("Product with that price not found")
     }
   },
-  // async sortByPrice(req,res) {
-  //   try {
-  //     const product = await Product.findAll({
-  //       order: [
-  //         [Product.price, "ASC"]
-  //       ]
-  //     })
-  //     res.send(product)
-  //   } catch (error) {
-  //     console.error(error)
-  //     res.status(404).send("Unexpected error while trying to sort the products")
-  //   }
-  // }
+  async sortByPrice(req,res) {
+    try {
+      const product = await Product.findAll({
+        order: [
+          ["price", "ASC"]
+        ]
+      })
+      res.send(product)
+    } catch (error) {
+      console.error(error)
+      res.status(404).send("Unexpected error while trying to sort the products")
+    }
+  }
 };
 
 module.exports = ProductController;

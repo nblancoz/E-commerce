@@ -10,6 +10,6 @@ router.get("/getAll", ProductController.getAll)
 router.get("/getById/:id", ProductController.getOneById)
 router.get("/getByName/:name", ProductController.getOneByName)
 router.get("/getByPrice/:price", ProductController.getByPrice)
-// router.get("/sortByPrice", ProductController.sortByPrice) error
+router.get("/sortByPrice", ProductController.sortByPrice)
 
 module.exports = router;
