@@ -9,12 +9,12 @@ const CategoryController = {
         .send({ message: "Category created successfully", category });
     } catch (error) {
       console.error(error);
-      res.status(500).send("Error whilte trying to create the category");
+      res.status(500).send("Error whilte creating the category");
     }
   },
   async getAll(req, res) {
     try {
-      const categories = await Category.findAll();
+      const categories = await Category.findAll(); // include the products
       res.send(categories);
     } catch (error) {
       console.error(error);
@@ -23,60 +23,56 @@ const CategoryController = {
   },
   async update(req, res) {
     try {
-      await Category.update(req.body, {
+      const category = await Category.update(req.body, {
         where: {
           id: req.params.id,
         },
       });
-      res.send("Category updated successfully");
+      res.send({ message: "Category updated successfully", category });
     } catch (error) {
       console.error(error);
-      res
-        .status(500)
-        .send("Unexpected error while trying to update de category");
+      res.status(500).send("Unexpected error while updating de category");
     }
   },
   async delete(req, res) {
     try {
-      await Category.destroy({
+      const category = await Category.destroy({
         where: {
           id: req.params.id,
         },
       });
-      res.send("Category deleted successfully");
+      res.send({ message: "Category deleted successfully", category });
     } catch (error) {
       console.error(error);
-      res
-        .status(500)
-        .send("Unexpected error while trying to delete the category");
+      res.status(500).send("Unexpected error while deleting the category");
     }
   },
   async getOneById(req, res) {
     try {
       const category = await Category.findAll({
         where: {
-          id: req.params.id
-        }
-      })
-      res.send(category)
+          id: req.params.id,
+        },
+      });
+      res.send(category);
     } catch (error) {
-      console.error(error)
-      res.status(500).send("Unexpected error while trying to search to this category") // al colocar un id que no existe sale un array vacio
+      console.error(error);
+      res.status(404).send("Category not found"); // al colocar un id que no existe sale un array vacio
     }
   },
   async getByName(req, res) {
     try {
       const category = await Category.findAll({
         where: {
-          name: req.params.name
-        }
-      })
-      res.send(category)
+          name: req.params.name,
+        },
+      });
+      res.send(category);
     } catch (error) {
-      console.error(error)
-      res.status(404).send("Category not found")
+      console.error(error);
+      res.status(404).send("Category not found");
     }
-  }
+  },
 };
 
 module.exports = CategoryController;
