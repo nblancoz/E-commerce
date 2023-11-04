@@ -6,7 +6,7 @@ This project consists in the creation of an E-commerce, using endpoints and a da
 
 ## Technologies used for the project
 
-<img align="center" alt="HTML" height="50" width="60" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/1200px-Node.js_logo.svg.png"> <img align="center" alt="CSS" height="50" width="60" src="https://miro.medium.com/v2/resize:fit:1400/1*i2fRBk3GsYLeUk_Rh7AzHw.png"> <img align="center" alt="Rafa-Js" height="50" width="60" src="https://i.blogs.es/91493f/sequelize/1366_2000.png"> <img align="center" alt="Rafa-Js" height="50" width="60" src="https://hoplasoftware.com/wp-content/uploads/2021/07/1024px-MySQL.ff87215b43fd7292af172e2a5d9b844217262571.png">
+<img align="center" alt="HTML" height="50" width="100" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/1200px-Node.js_logo.svg.png"> <img align="center" alt="CSS" height="50" width="60" src="https://miro.medium.com/v2/resize:fit:1400/1*i2fRBk3GsYLeUk_Rh7AzHw.png"> <img align="center" alt="Rafa-Js" height="50" width="60" src="https://i.blogs.es/91493f/sequelize/1366_2000.png"> <img align="center" alt="Rafa-Js" height="50" width="60" src="https://hoplasoftware.com/wp-content/uploads/2021/07/1024px-MySQL.ff87215b43fd7292af172e2a5d9b844217262571.png">
 
 ## Summary of the E-commerce
 
