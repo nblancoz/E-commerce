@@ -4,6 +4,7 @@ const ProductController = {
   async create(req, res) {
     try {
       const product = await Product.create(req.body);
+      product.addCategory(req.body.CategoryId)
       res
         .status(201)
         .send({ message: "Product created successfully", product });
@@ -14,7 +15,7 @@ const ProductController = {
   },
   async update(req, res) {
     try {
-      const product = await Product.update(req.body, {
+      await Product.update(req.body, {
         where: {
           id: req.params.id,
         },
@@ -27,7 +28,7 @@ const ProductController = {
   },
   async delete(req, res) {
     try {
-      const product = await Product.destroy({
+      await Product.destroy({
         where: {
           id: req.params.id,
         },
@@ -40,7 +41,10 @@ const ProductController = {
   },
   async getAll(req, res) {
     try {
-      const product = await Product.findAll(); // show categories
+      const product = await Product.findAll({
+        include: [{ model: Category,attributes:["id", "name"], through: { attributes: [] } }],
+
+      }); // show categories
       res.send(product);
     } catch (error) {
       console.error(error);

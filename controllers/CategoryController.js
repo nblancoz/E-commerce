@@ -14,7 +14,9 @@ const CategoryController = {
   },
   async getAll(req, res) {
     try {
-      const categories = await Category.findAll(); // include the products
+      const categories = await Category.findAll({
+        include: [{ model: Product,attributes:["id", "name"], through: { attributes: [] } }],
+      });
       res.send(categories);
     } catch (error) {
       console.error(error);
@@ -36,12 +38,12 @@ const CategoryController = {
   },
   async delete(req, res) {
     try {
-      const category = await Category.destroy({
+      await Category.destroy({
         where: {
           id: req.params.id,
         },
       });
-      res.send({ message: "Category deleted successfully", category });
+      res.send("Category deleted successfully");
     } catch (error) {
       console.error(error);
       res.status(500).send("Unexpected error while deleting the category");
