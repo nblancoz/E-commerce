@@ -7,7 +7,7 @@ router.post("/", UserController.create);
 router.get("/getAll", UserController.getAll);
 router.get("/getByName/:name", UserController.getOneByName);
 router.post("/login", UserController.login);
-router.delete("/deleteByName/:name", authentication, isAdmin, UserController.delete)
+router.delete("/deleteByName/:name", authentication, isAdmin, UserController.deleteByName)
 router.delete("/logout", authentication, UserController.logout)
 
 module.exports = router;

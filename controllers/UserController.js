@@ -1,11 +1,17 @@
-const { User, Order, Sequelize, Token, Product } = require("../models/index.js");
+const {
+  User,
+  Order,
+  Sequelize,
+  Token,
+  Product,
+} = require("../models/index.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { Op } = Sequelize;
 const { jwt_secret } = require("../config/config.json")["development"];
 
 const UserController = {
-  async create(req, res) {
+  async create(req, res, next) {
     try {
       req.body.role = "User";
       const password = bcrypt.hashSync(req.body.password, 10);
@@ -14,6 +20,7 @@ const UserController = {
     } catch (error) {
       console.error(error);
       res.status(500).send("Unexpected error creating the user");
+      next(error);
     }
   },
   async getAll(req, res) {
@@ -75,13 +82,21 @@ const UserController = {
       res.status(500).send("Unexpected error in the login");
     }
   },
-  async delete(req, res) {
-    await User.destroy({
-      where: {
-        name: req.params.name,
-      },
-    });
-    res.send("User deleted sucessfully");
+  async deleteByName(req, res) {
+    try {
+      const user = await User.destroy({
+        where: {
+          name: req.params.name,
+        },
+      });
+      if (user === 0) {
+        return res.status(404).send("User with that name not found");
+      }
+      res.send("User deleted sucessfully");
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Unexpected error while deleting the user");
+    }
   },
   async logout(req, res) {
     try {
