@@ -1,4 +1,4 @@
-const { User, Order, Sequelize, Token } = require("../models/index.js");
+const { User, Order, Sequelize, Token, Product } = require("../models/index.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { Op } = Sequelize;
@@ -19,7 +19,15 @@ const UserController = {
   async getAll(req, res) {
     try {
       const users = await User.findAll({
-        include: [Order],
+        include: {
+          model: Order,
+          attributes: ["id"],
+          include: {
+            model: Product,
+            attributes: ["id", "name"],
+            through: { attributes: [] },
+          },
+        },
       });
       res.send(users);
     } catch (error) {
@@ -37,10 +45,13 @@ const UserController = {
         },
         include: [Order],
       });
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
       res.send(user);
     } catch (error) {
       console.error(error);
-      res.status(404).send("User not found");
+      res.status(500).send("Unexpected error while looking for the user");
     }
   },
   async login(req, res) {
@@ -70,7 +81,7 @@ const UserController = {
         name: req.params.name,
       },
     });
-    res.send({ message: "User deleted sucessfully", user });
+    res.send("User deleted sucessfully");
   },
   async logout(req, res) {
     try {
@@ -82,7 +93,7 @@ const UserController = {
           ],
         },
       });
-      res.send({ message: "See you soon", user });
+      res.send("See you soon");
     } catch (error) {
       console.error(error);
       res.status(500).send("Unexpected error trying to logout");

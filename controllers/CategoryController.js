@@ -12,17 +12,6 @@ const CategoryController = {
       res.status(500).send("Error whilte creating the category");
     }
   },
-  async getAll(req, res) {
-    try {
-      const categories = await Category.findAll({
-        include: [{ model: Product,attributes:["id", "name"], through: { attributes: [] } }],
-      });
-      res.send(categories);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send("Error while charging the categories");
-    }
-  },
   async update(req, res) {
     try {
       const category = await Category.update(req.body, {
@@ -49,17 +38,37 @@ const CategoryController = {
       res.status(500).send("Unexpected error while deleting the category");
     }
   },
+  async getAll(req, res) {
+    try {
+      const categories = await Category.findAll({
+        include: [
+          {
+            model: Product,
+            attributes: ["id", "name"],
+            through: { attributes: [] },
+          },
+        ],
+      });
+      res.send(categories);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error while charging the categories");
+    }
+  },
   async getOneById(req, res) {
     try {
-      const category = await Category.findAll({
+      const category = await Category.findOne({
         where: {
           id: req.params.id,
         },
       });
+      if (!category) {
+        return res.status(404).send("Category not found");
+      }
       res.send(category);
     } catch (error) {
       console.error(error);
-      res.status(404).send("Category not found"); // al colocar un id que no existe sale un array vacio
+      res.status(500).send("Unexpected error looking for the category");
     }
   },
   async getByName(req, res) {
