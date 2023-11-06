@@ -4,7 +4,7 @@ const ProductController = {
   async create(req, res) {
     try {
       const product = await Product.create(req.body);
-      product.addCategory(req.body.CategoryId)
+      product.addCategory(req.body.CategoryId);
       res
         .status(201)
         .send({ message: "Product created successfully", product });
@@ -42,9 +42,14 @@ const ProductController = {
   async getAll(req, res) {
     try {
       const product = await Product.findAll({
-        include: [{ model: Category,attributes:["id", "name"], through: { attributes: [] } }],
-
-      }); // show categories
+        include: [
+          {
+            model: Category,
+            attributes: ["id", "name"],
+            through: { attributes: [] },
+          },
+        ],
+      });
       res.send(product);
     } catch (error) {
       console.error(error);
@@ -58,10 +63,13 @@ const ProductController = {
           id: req.params.id,
         },
       });
+      if (!product) {
+        return res.status(404).send("Product not found");
+      }
       res.send(product);
     } catch (error) {
       console.error(error);
-      res.status(404).send("Product not found");
+      res.status(500).send("Unexpected error looking for the product");
     }
   },
   async getOneByName(req, res) {
@@ -79,21 +87,24 @@ const ProductController = {
   },
   async getByPrice(req, res) {
     try {
-      const product = await Product.findAll({
+      const products = await Product.findAll({
         where: {
           price: req.params.price,
         },
       });
-      res.send(product);
+      if (products.length < 1) {
+        return res.status(404).send("Product with that price not found");
+      }
+      res.send(products);
     } catch (error) {
       console.error(error);
-      res.status(404).send("Product with that price not found"); // no sale error al buscar un precio que no existe
+      res.status(500).send("There was an error");
     }
   },
   async sortByPrice(req, res) {
     try {
       const product = await Product.findAll({
-        order: [["price", "ASC"]],
+        order: [["price", "DESC"]],
       });
       res.send(product);
     } catch (error) {
