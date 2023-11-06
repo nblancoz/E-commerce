@@ -5,7 +5,7 @@ const { authentication, isAdmin } = require("../middleware/authentication");
 
 router.post("/", UserController.create);
 router.get("/getAll", UserController.getAll);
-router.get("/getByName/:name", authentication, UserController.getOneByName);
+router.get("/getByName/:name", UserController.getOneByName);
 router.post("/login", UserController.login);
 router.delete("/deleteByName/:name", authentication, isAdmin, UserController.delete)
 router.delete("/logout", authentication, UserController.logout)

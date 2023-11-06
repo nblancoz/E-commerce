@@ -5,41 +5,51 @@ const { Op } = Sequelize;
 const { jwt_secret } = require("../config/config.json")["development"];
 
 const UserController = {
-  create(req, res) {
-    req.body.role = "User";
-    const password = bcrypt.hashSync(req.body.password, 10);
-    User.create({ ...req.body, password })
-      .then((user) =>
-        res.status(201).send({ message: "User created succesfully", user })
-      )
-      .catch(console.error);
+  async create(req, res) {
+    try {
+      req.body.role = "User";
+      const password = bcrypt.hashSync(req.body.password, 10);
+      await User.create({ ...req.body, password });
+      res.status(201).send("User created successfully");
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Unexpected error creating the user");
+    }
   },
-  getAll(req, res) {
-    User.findAll({
-      include: [Order],
-    })
-      .then((users) => res.send(users))
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Unexpected error while charging the orders");
+  async getAll(req, res) {
+    try {
+      const users = await User.findAll({
+        include: [Order],
       });
+      res.send(users);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Unexpected error while showing the users");
+    }
   },
-  getOneByName(req, res) {
-    User.findOne({
-      where: {
-        name: {
-          [Op.like]: `%${req.params.name}%`,
+  async getOneByName(req, res) {
+    try {
+      const user = await User.findOne({
+        where: {
+          name: {
+            [Op.like]: `%${req.params.name}%`,
+          },
         },
-      },
-      include: [Order],
-    }).then((User) => res.send(User));
+        include: [Order],
+      });
+      res.send(user);
+    } catch (error) {
+      console.error(error);
+      res.status(404).send("User not found");
+    }
   },
-  login(req, res) {
-    User.findOne({
-      where: {
-        email: req.body.email,
-      },
-    }).then((user) => {
+  async login(req, res) {
+    try {
+      const user = await User.findOne({
+        where: {
+          email: req.body.email,
+        },
+      });
       if (!user) {
         return res.status(400).send("The user/password are incorrect");
       }
@@ -50,7 +60,9 @@ const UserController = {
       const token = jwt.sign({ id: user.id }, jwt_secret);
       Token.create({ token, UserId: user.id });
       res.send({ message: "Welcome, " + user.name, user, token });
-    });
+    } catch (error) {
+      res.status(500).send("Unexpected error in the login");
+    }
   },
   async delete(req, res) {
     await User.destroy({
