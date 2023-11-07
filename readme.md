@@ -17,26 +17,22 @@ In my case, I´ve done the E-commerce of a soccer shop in which I can do many th
 
 <ul>
     <li>
-    Products: The products can be created by using a url, as well as update a product, delete a product and all the endpoints but with their own url. Furthermore, there is an endpoint that can show all the products including the category that it belongs to. 
-    Beside of it, there is an endpoint that can show by looking for the product for example, if I put the id 1 the product 1 is showed as well as putting the name and price. Other shows all the products taking into account the price that the product has and it is shown by high to low. 
-    I´ve implemented a validation that the product can not be created if some fields aren´t filled and shows a message saying what is missing. The products can only be created/updated and deleted if you are authenticated.
+    Products: Users can manage products through specific endpoints, including creation, update, and deletion. There are search functionalities, price sorting, and authentication requirements.
     </li>
     <li>
-    Categories: The categories can be created as well as the products by a url, a category can be updated, besides, can be deleted. Moreover there is an endpoint that allows to show all the categories including their products. Besides of it, other endpoint was created to look for a category and show it and other that do the same but with the name of the category.
+    Categories: Category management, including creation, updating, and deletion, is possible via specific endpoints. Categories can be associated with products.
     </li>
     <li>
-    Orders: The orders have an enpoint that allosw the user to place a order and an endpoint was created to show the orders with their respective products.
+    Orders: Users can place orders, and there's an endpoint to view orders along with their associated products.
     </li>
     <li>
-    Users: The users are created and can login, for the login I´ve implemented bcrypt and JWT. Bcrypt can encrypt the password of the user and in the database it appears the encrypted password so it is 100% confidential. 
-    The JWT can securely transmit information that the user introduce and it can be signed for preventing the fake creation of one. Moreover an endpoint was created that allows to show the user and the orders and products the user has ordered. 
-    A validation was implemented to prevent the user create an user without filling all the fields, if this ocurrs, a message it´s shown and allows the user to recognize what is missing in his/her request.
+    Users: User management includes creation and login with secure password handling (bcrypt and JWT). Users can view their orders and products.
     </li>
     <li>
-    Seeders: Five different products were created using seeders.
+    Seeders: Five products were created using seeders to populate the database.
     </li>
     <li>
-    Admin role: This role was implemented for the creation of products, as well as the elimination and it´s update.
+    Admin Role: An admin role allows for product creation, updating, and deletion, granting specific privileges for administrative tasks.
     </li>
 </ul>
 
