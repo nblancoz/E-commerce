@@ -1,7 +1,7 @@
 const { Product, Category } = require("../models/index.js");
 
 const ProductController = {
-  async create(req, res) {
+  async create(req, res, next) {
     try {
       const product = await Product.create(req.body);
       product.addCategory(req.body.CategoryId);
@@ -13,6 +13,7 @@ const ProductController = {
       res
       .status(500)
       .send({ message: "Unexpected error in the creation of the product", error });
+      next(error)
     }
   },
   async update(req, res) {
