@@ -10,7 +10,9 @@ const ProductController = {
         .send({ message: "Product created successfully", product });
     } catch (error) {
       console.error(error);
-      res.status(500).send("Unexpected error while creating the product");
+      res
+      .status(500)
+      .send({ message: "Unexpected error in the creation of the product", error });
     }
   },
   async update(req, res) {
@@ -23,7 +25,9 @@ const ProductController = {
       res.send("Product updated successfully");
     } catch (error) {
       console.error(error);
-      res.status(500).send("Unexpected error while updating de product");
+      res
+        .status(500)
+        .send({ message: "Unexpected error updating the product", error });
     }
   },
   async delete(req, res) {
@@ -36,7 +40,9 @@ const ProductController = {
       res.send("Product deleted successfully");
     } catch (error) {
       console.error(error);
-      res.status(500).send("Unexpected error while deleting the product");
+      res
+      .status(500)
+      .send({ message: "Unexpected error deleting the product", error });
     }
   },
   async getAll(req, res) {
@@ -53,7 +59,9 @@ const ProductController = {
       res.send(product);
     } catch (error) {
       console.error(error);
-      res.status(500).send("Unexpected error while showing the products");
+      res
+      .status(500)
+      .send({ message: "Unexpected error showing the products", error });
     }
   },
   async getOneById(req, res) {
@@ -69,7 +77,9 @@ const ProductController = {
       res.send(product);
     } catch (error) {
       console.error(error);
-      res.status(500).send("Unexpected error looking for the product");
+      res
+        .status(500)
+        .send({ message: "Unexpected error looking for the product", error });
     }
   },
   async getOneByName(req, res) {
@@ -79,10 +89,15 @@ const ProductController = {
           name: req.params.name,
         },
       });
+      if (!product) {
+        return res.status(404).send("Product not found");
+      }
       res.send(product);
     } catch (error) {
       console.error(error);
-      res.status(404).send("Product not found");
+      res
+        .status(500)
+        .send({ message: "Unexpected error looking for the product", error });
     }
   },
   async getByPrice(req, res) {
@@ -98,7 +113,9 @@ const ProductController = {
       res.send(products);
     } catch (error) {
       console.error(error);
-      res.status(500).send("There was an error");
+      res
+        .status(500)
+        .send({ message: "Unexpected error looking for the product", error });
     }
   },
   async sortByPrice(req, res) {
@@ -111,7 +128,7 @@ const ProductController = {
       console.error(error);
       res
         .status(500)
-        .send("Unexpected error while trying to sort the products");
+        .send({ message: "Unexpected error sorting the products", error });
     }
   },
 };

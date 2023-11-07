@@ -8,7 +8,9 @@ const OrderController = {
       res.status(201).send({ message: "Order placed successfully", order });
     } catch (error) {
       console.error(error);
-      res.status(500).send("Unexpected error while placing the order");
+      res
+      .status(500)
+      .send({ message: "Unexpected error while placing the order", error });
     }
   },
   async getAll(req, res) {
@@ -27,7 +29,9 @@ const OrderController = {
       res.send(orders);
     } catch (error) {
       console.error(error);
-      res.status(500).send("Unexpected error while charging the orders");
+      res
+      .status(500)
+      .send({ message: "Unexpected error charging the orders", error });
     }
   },
   async deleteById(req, res) {
@@ -40,7 +44,9 @@ const OrderController = {
       res.send("Order deleted successfully");
     } catch (error) {
       console.error(error);
-      res.status(500).send("Unexpected error while deleting the order");
+      res
+      .status(500)
+      .send({ message: "Unexpected error deleting the order", error });
     }
   },
 };

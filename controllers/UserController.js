@@ -1,10 +1,4 @@
-const {
-  User,
-  Order,
-  Sequelize,
-  Token,
-  Product,
-} = require("../models/index.js");
+const { User, Order, Sequelize, Token, Product } = require("../models/index.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { Op } = Sequelize;
@@ -19,7 +13,9 @@ const UserController = {
       res.status(201).send("User created successfully");
     } catch (error) {
       console.error(error);
-      res.status(500).send("Unexpected error creating the user");
+      res
+        .status(500)
+        .send({ message: "Unexpected error creating the user", error });
       next(error);
     }
   },
@@ -39,7 +35,9 @@ const UserController = {
       res.send(users);
     } catch (error) {
       console.error(error);
-      res.status(500).send("Unexpected error while showing the users");
+      res
+        .status(500)
+        .send({ message: "Unexpected error showing the users", error });
     }
   },
   async getOneByName(req, res) {
@@ -58,7 +56,9 @@ const UserController = {
       res.send(user);
     } catch (error) {
       console.error(error);
-      res.status(500).send("Unexpected error while looking for the user");
+      res
+        .status(500)
+        .send({ message: "Unexpected error looking for the user", error });
     }
   },
   async login(req, res) {
@@ -79,7 +79,10 @@ const UserController = {
       Token.create({ token, UserId: user.id });
       res.send({ message: "Welcome, " + user.name, user, token });
     } catch (error) {
-      res.status(500).send("Unexpected error in the login");
+      console.error(error);
+      res
+      .status(500)
+      .send({ message: "Unexpected error in the login", error });
     }
   },
   async deleteByName(req, res) {
@@ -95,7 +98,9 @@ const UserController = {
       res.send("User deleted sucessfully");
     } catch (error) {
       console.error(error);
-      res.status(500).send("Unexpected error while deleting the user");
+      res
+        .status(500)
+        .send({ message: "Unexpected error deleting the user", error });
     }
   },
   async logout(req, res) {
@@ -111,7 +116,9 @@ const UserController = {
       res.send("See you soon");
     } catch (error) {
       console.error(error);
-      res.status(500).send("Unexpected error trying to logout");
+      res
+        .status(500)
+        .send({ message: "Unexpected error trying to logout", error });
     }
   },
 };

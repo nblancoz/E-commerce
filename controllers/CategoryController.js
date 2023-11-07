@@ -9,20 +9,24 @@ const CategoryController = {
         .send({ message: "Category created successfully", category });
     } catch (error) {
       console.error(error);
-      res.status(500).send("Error whilte creating the category");
+      res
+      .status(500)
+      .send({ message: "Unexpected errorcreating the category", error });
     }
   },
   async update(req, res) {
     try {
-      const category = await Category.update(req.body, {
+      await Category.update(req.body, {
         where: {
           id: req.params.id,
         },
       });
-      res.send({ message: "Category updated successfully", category });
+      res.send("Category updated successfully");
     } catch (error) {
       console.error(error);
-      res.status(500).send("Unexpected error while updating de category");
+      res
+      .status(500)
+      .send({ message: "Unexpected error updating de category", error });
     }
   },
   async delete(req, res) {
@@ -35,7 +39,9 @@ const CategoryController = {
       res.send("Category deleted successfully");
     } catch (error) {
       console.error(error);
-      res.status(500).send("Unexpected error while deleting the category");
+      res
+      .status(500)
+      .send({ message: "Unexpected error deleting the category", error });
     }
   },
   async getAll(req, res) {
@@ -52,7 +58,9 @@ const CategoryController = {
       res.send(categories);
     } catch (error) {
       console.error(error);
-      res.status(500).send("Error while charging the categories");
+      res
+      .status(500)
+      .send({ message: "Unexpected error showing the categories", error });
     }
   },
   async getOneById(req, res) {
@@ -68,7 +76,9 @@ const CategoryController = {
       res.send(category);
     } catch (error) {
       console.error(error);
-      res.status(500).send("Unexpected error looking for the category");
+      res
+      .status(500)
+      .send({ message: "Unexpected error looking for the category", error });
     }
   },
   async getByName(req, res) {
@@ -78,10 +88,15 @@ const CategoryController = {
           name: req.params.name,
         },
       });
+      if (!category) {
+        return res.status(404).send("Category not found");
+      }
       res.send(category);
     } catch (error) {
       console.error(error);
-      res.status(404).send("Category not found");
+      res
+      .status(500)
+      .send({ message: "Unexpected error looking fot the category", error });
     }
   },
 };
