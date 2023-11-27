@@ -1,4 +1,10 @@
-const { User, Order, Sequelize, Token, Product } = require("../models/index.js");
+const {
+  User,
+  Order,
+  Sequelize,
+  Token,
+  Product,
+} = require("../models/index.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { Op } = Sequelize;
@@ -80,9 +86,7 @@ const UserController = {
       res.send({ message: "Welcome, " + user.name, user, token });
     } catch (error) {
       console.error(error);
-      res
-      .status(500)
-      .send({ message: "Unexpected error in the login", error });
+      res.status(500).send({ message: "Unexpected error in the login", error });
     }
   },
   async deleteByName(req, res) {
@@ -119,6 +123,29 @@ const UserController = {
       res
         .status(500)
         .send({ message: "Unexpected error trying to logout", error });
+    }
+  },
+  async getUserInfo(req, res) {
+    try {
+      const user = await User.findOne({
+        where: {
+          id: req.user.id,
+        },
+        attributes: { exclude: ["token", "password", "role"] },
+        include: {
+          model: Order,
+          attributes: ["id"],
+          include: {
+            model: Product,
+            attributes: ["id", "name"],
+            through: { attributes: [] },
+          },
+        },
+      });
+      res.send(user);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Unexpected error looking for your info");
     }
   },
 };

@@ -18,28 +18,37 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: {
-            msg: "Please enter the name of the product"
-          }
-        }
+            msg: "Please enter the name of the product",
+          },
+        },
       },
       description: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: {
-            msg: "Please enter the description of the product"
-          }
-        }
+            msg: "Please enter the description of the product",
+          },
+        },
       },
       price: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
           notNull: {
-            msg: "Please enter the price of the product"
-          }
-        }
-      }
+            msg: "Please enter the price of the product",
+          },
+        },
+      },
+      img: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Please an image of the product",
+          },
+        },
+      },
     },
     {
       sequelize,

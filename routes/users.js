@@ -9,5 +9,6 @@ router.get("/getByName/:name", UserController.getOneByName);
 router.post("/login", UserController.login);
 router.delete("/deleteByName/:name", authentication, isAdmin, UserController.deleteByName)
 router.delete("/logout", authentication, UserController.logout)
+router.get("/info", authentication, UserController.getUserInfo)
 
 module.exports = router;
