@@ -3,7 +3,7 @@ const { Order, User, Product } = require("../models/index.js");
 const OrderController = {
   async create(req, res) {
     try {
-      const order = await Order.create(req.body);
+      const order = await Order.create({UserId:req.user.id,ProductId:req.body.ProductId});
       order.addProduct(req.body.ProductId);
       res.status(201).send({ message: "Order placed successfully", order });
     } catch (error) {
